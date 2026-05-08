@@ -1,0 +1,35 @@
+{% extends 'master/base.html' %}
+
+
+{% block content %}
+    <table class="table">
+  <thead>
+    <tr>
+
+      <th scope="col">SL</th>
+      <th scope="col">Name</th>
+      <th scope="col">Applied at</th>
+      <th scope="col">resume</th>
+
+    </tr>
+  </thead>
+  
+  
+    
+  
+    
+  <tbody>
+    {% for x in data %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{x.jb_applyer.seeker.display_name}}</td>
+      <td>{{x.apply_at}}</td>
+      <td>
+        <a href="{{x.resume.url}}">resume</a>
+      </td>
+    </tr>
+    {% endfor %}
+</table>
+    
+{% endblock %}
+    

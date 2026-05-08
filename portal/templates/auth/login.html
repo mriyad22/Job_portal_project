@@ -1,0 +1,20 @@
+{% extends 'master/base.html' %}
+
+
+{% block content %}
+<div class="container">
+    {% include 'message.html' %}
+    <h2>User Login</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {{data.as_p}}
+  
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <br>
+    <a href="{% url 'register_page' %}" class="btn btn-success">Don't hava any account!</a>
+</div>
+    
+{% endblock %}
+    

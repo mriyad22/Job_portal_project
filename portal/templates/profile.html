@@ -1,0 +1,64 @@
+{% extends 'master/base.html' %}
+
+{% block content %}
+    <h1>Profiel</h1>
+    <div class="container">
+        {% include 'message.html' %}
+    
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="width: 20rem;">
+            
+            
+                
+                {% if request.user.user_type == 'Recruiter' %}
+                    <!-- Image -->
+                    <div class="text-center pt-3">
+                        <img src="{{request.user.recruiter_profile.logo.url}}"
+                            class="card-img-top rounded-circle shadow"
+                            style="width: 120px; height: 120px; object-fit: cover;"
+                            alt="profile">
+                    </div>
+
+                    <!-- Body -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Display Name: {{request.user.display_name}}</h5>
+
+                        <p class="card-text text-muted small">Company name: {{request.user.recruiter_profile.company_name}}</p>
+                        <p class="card-text text-muted small">Address: {{request.user.recruiter_profile.address}}</p>
+                        <p class="card-text text-muted small">Phone: {{request.user.recruiter_profile.phone}}</p>
+
+                        <!-- Button -->
+                        <a href="{% url 'profile_update' %}" class="btn btn-primary rounded-pill px-4">Update</a>
+                        <a href="{% url 'passwd_change' %}" class="btn btn-primary rounded-pill px-4">Change passwd</a>
+                    </div>
+                    
+
+
+
+                {% else %}
+                    <!-- Image -->
+                    <div class="text-center pt-3">
+                        <img src="{{request.user.seeker_profile.image.url}}"
+                            class="card-img-top rounded-circle shadow"
+                            style="width: 120px; height: 120px; object-fit: cover;"
+                            alt="profile">
+                    </div>
+
+                    <!-- Body -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Display Name: {{request.user.display_name}}</h5>
+                        
+                        <p class="card-text text-muted small">Address: {{request.user.seeker_profile.address}}</p>
+                        <p class="card-text text-muted small">Phone: {{request.user.seeker_profile.phone}}</p>
+
+                        <!-- Button -->
+                        <a href="{% url 'profile_update' %}" class="btn btn-primary rounded-pill px-4">Update</a>
+                        <a href="{% url 'passwd_change' %}" class="btn btn-primary rounded-pill px-4">Change passwd</a>
+                    </div>
+                {% endif %}
+                    
+                
+
+        </div>
+    </div>
+{% endblock %}
+    
