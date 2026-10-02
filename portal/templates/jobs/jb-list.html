@@ -89,10 +89,10 @@
                             style="width:60px; height:60px; object-fit:cover;" />
 
                         <div>
-                            <h5 class="mb-1 fw-bold">{{x.jb_title}}</h5>
-                            <h6 class="mb-1 fw-bold">{{x.posted_by.company_name}}</h6>
-                            <p class="text-muted mb-1 small">{{x.jb_description|truncatewords:10}}</p>
-                            <p class="text-muted mb-1 small">{{x.jb_skills}}</p>
+                            <h5 class="mb-1 fw-bold">{{x.posted_by.company_name}}</h5>
+                            <h6 class="mb-1 fw-bold"> Title: {{x.jb_title}}</h6>
+                            <p class="text-muted mb-1 small"><strong> des: </strong> {{x.jb_description|truncatewords:10}}</p>
+                            <p class="text-muted mb-1 small"> <strong> skills: </strong> {{x.jb_skills}}</p>
                         </div>
                     </div>
 
@@ -115,6 +115,8 @@
 
                             {% if request.user.user_type == 'Recruiter' %}
                                 <a href="{% url 'candidate' x.id %}" class="btn btn-gradient5 btn-sm rounded-pill px-3">Candidate</a>
+                                <a href="{% url 'jb_update' x.id %}" class="btn btn-gradient5 btn-sm rounded-pill px-3">Edit</a>
+                                <a href="{% url 'jb_delete' x.id %}" class="btn btn-danger btn-sm rounded-pill px-3">Delete</a>
                             {% else %}
                                 <a href="{% url 'apply_job' x.id %}" class="btn btn-gradient5 btn-sm rounded-pill px-3">Apply</a>
                             {% endif %}

@@ -12,6 +12,10 @@ urlpatterns = [
 
     path('job-list/', jb_list, name='jb_list'),
     path('job-post/', jb_post, name='jb_post'),
+
+    path('job-update/<int:u_id>/', jb_post_update, name='jb_update'),
+    path('job-delete/<int:d_id>/', jb_post_delete, name='jb_delete'),
+
     path('apply/<int:j_id>/', apply_job, name='apply_job'),
 
     path('my_applied/', my_applied, name='my_applied'),

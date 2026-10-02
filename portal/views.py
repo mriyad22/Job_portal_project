@@ -118,6 +118,42 @@ def jb_post(request):
 
 
 
+def jb_post_update(request, u_id):
+    update_id = get_object_or_404(JobPostModel, id = u_id)
+    if request.method == 'POST':
+        form_data = JobPostForm(request.POST, instance = update_id)
+        if form_data.is_valid():
+            form_data.save()
+            messages.success(request, 'Job has been updated')
+            return redirect('jb_list')
+        
+    form_data = JobPostForm(instance = update_id)
+    con = {
+        'data' : form_data
+    }
+
+    return render(request, 'jobs/jb-post.html', con)
+
+
+
+
+def jb_post_delete(request, d_id):
+    delete_id = get_object_or_404(JobPostModel, id = d_id)
+    if request.method == 'POST':
+        delete_id.delete()
+        messages.success(request, 'Job has been deleted')
+        return redirect('jb_list')
+    
+
+    con = {
+        'object' : delete_id
+    }
+
+    return render(request, 'delete.html', con)
+
+
+
+
 def home(request):
     cate_data = CategoryModel.objects.all()
 
