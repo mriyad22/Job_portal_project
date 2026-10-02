@@ -121,3 +121,5 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'portal.UserModel'
 
 LOGIN_URL = 'login_page'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
