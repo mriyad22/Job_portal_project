@@ -10,7 +10,7 @@ class UserModel(AbstractUser):
     ]
 
     display_name = models.CharField(max_length=255, null=True)
-    user_type = models.CharField(max_length=100, choices=USER_TYPE, null=True)
+    user_type = models.CharField(max_length=100, choices=USER_TYPE, default="Seeker",null=True)
 
     def __str__(self):
         return f'{self.username} - {self.user_type}'

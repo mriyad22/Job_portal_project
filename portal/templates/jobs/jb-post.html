@@ -1,18 +1,5 @@
-{% extends 'master/base.html' %}
-
-
-{% block content %}
-<div class="container">
-    
-    <h2>User Profile Update</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        {{data.as_p}}
-  
-        <button type="submit" class="btn btn-primary">Post</button>
-    </form>
-</div>
-    
+{% extends 'master/base.html' %}{% block title %}{% if request.resolver_match.url_name == 'passwd_change' %}Change Password{% else %}Post a Job{% endif %} | JobHub{% endblock %}
+{% block content %}<section class="section pt-5"><div class="container"><div class="row justify-content-center"><div class="col-lg-8"><div class="mb-4"><span class="eyebrow">{% if request.resolver_match.url_name == 'passwd_change' %}Account security{% else %}Recruiter tools{% endif %}</span><h1 class="fw-bold mt-2">{% if request.resolver_match.url_name == 'passwd_change' %}Change your password{% else %}Create a new job post{% endif %}</h1><p class="text-muted-custom">{% if request.resolver_match.url_name == 'passwd_change' %}Keep your account secure with a strong password.{% else %}Share the role details so candidates can understand the opportunity clearly.{% endif %}</p></div><div class="card-modern p-4 p-md-5">
+    <form method="post" {% if request.resolver_match.url_name != 'passwd_change' %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}{% for field in data %}<div class="mb-3">{{ field.label_tag }}{{ field }}{% if field.help_text %}<div class="field-help mt-1">{{ field.help_text|safe }}</div>{% endif %}{% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|striptags }}</div>{% endif %}</div>{% endfor %}{% if data.non_field_errors %}<div class="alert alert-danger rounded-4">{{ data.non_field_errors }}</div>{% endif %}<div class="d-flex gap-2 pt-2"><button type="submit" class="btn btn-primary btn-pill px-4">{% if request.resolver_match.url_name == 'passwd_change' %}Update Password{% else %}Publish Job{% endif %}</button><a href="{% if request.resolver_match.url_name == 'passwd_change' %}{% url 'profile' %}{% else %}{% url 'jb_list' %}{% endif %}" class="btn btn-light btn-pill px-4">Cancel</a>
+</div></form></div></div></div></div></section>
 {% endblock %}
-    
