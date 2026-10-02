@@ -5,7 +5,21 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
-# Create your views here.
+
+#-------------> Home
+
+def home(request):
+    cate_data = CategoryModel.objects.all()
+
+    con = {
+        'data' : cate_data
+    }
+
+    return render(request, 'home.html', con)
+
+
+
+#-------------> User Register here
 
 def user_register(request):
     if request.method == 'POST':
@@ -22,6 +36,9 @@ def user_register(request):
 
     return render(request, 'auth/register.html', con)
 
+
+
+#-------------> User Login
 
 def user_login(request):
     if request.method == 'POST':
@@ -40,6 +57,9 @@ def user_login(request):
     return render(request, 'auth/login.html', con)
 
 
+
+#-------------> Logout user
+
 @login_required
 def logout_page(request):
     logout(request)
@@ -48,12 +68,17 @@ def logout_page(request):
 
 
 
+#------------->Display user profile
 
 def profile(request):
 
     return render(request, 'profile.html')
 
 
+
+#-------------> Update User profile
+
+@login_required
 def profile_update(request):
     if request.user.user_type == 'Recruiter':
         try:
@@ -96,8 +121,9 @@ def profile_update(request):
     return render(request, 'profile-update.html', con)
 
 
+#-------------> Post a job
 
-
+@login_required
 def jb_post(request):
     if request.method == 'POST':
         form_data = JobPostForm(request.POST)
@@ -117,7 +143,9 @@ def jb_post(request):
 
 
 
+#-------------> Update job
 
+@login_required
 def jb_post_update(request, u_id):
     update_id = get_object_or_404(JobPostModel, id = u_id)
     if request.method == 'POST':
@@ -136,7 +164,8 @@ def jb_post_update(request, u_id):
 
 
 
-
+#--------> Delete job
+@login_required
 def jb_post_delete(request, d_id):
     delete_id = get_object_or_404(JobPostModel, id = d_id)
     if request.method == 'POST':
@@ -153,18 +182,7 @@ def jb_post_delete(request, d_id):
 
 
 
-
-def home(request):
-    cate_data = CategoryModel.objects.all()
-
-    con = {
-        'data' : cate_data
-    }
-
-    return render(request, 'home.html', con)
-
-
-
+#------------->Display all jobs
 
 def jb_list(request):
     if request.user.is_authenticated:
@@ -188,6 +206,8 @@ def jb_list(request):
 
 
 
+#--------> apply for job
+
 @login_required
 def apply_job(request, j_id):
     jb_apl = get_object_or_404(JobPostModel, id = j_id)
@@ -210,7 +230,9 @@ def apply_job(request, j_id):
 
 
 
+#---------->view my apply
 
+@login_required
 def my_applied(request):
     my_apld = JobApplyModel.objects.filter(jb_applyer = request.user.seeker_profile)
     con = {
@@ -222,6 +244,9 @@ def my_applied(request):
 
 
 
+#---------->View job apply candidate
+
+@login_required
 def candidete(request, c_id):
     ca_apl = get_object_or_404(JobPostModel, id = c_id)
 
@@ -235,10 +260,12 @@ def candidete(request, c_id):
 
 
 
+#--------->Change user password
 
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
+@login_required
 def passwd_change(request):
     if request.method == 'POST':
         form_data = PasswordChangeForm(request.user, request.POST)
