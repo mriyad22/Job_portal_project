@@ -5,6 +5,8 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
+from django.db.models import Q
+
 
 #-------------> Home
 
@@ -189,17 +191,24 @@ def jb_list(request):
         if request.user.user_type == 'Recruiter':
             data = JobPostModel.objects.filter(posted_by = request.user.recruiter_profile)
         else:
-            data = JobPostModel.objects.all()
+            data = JobPostModel.objects.select_related('posted_by')
     else:
-        data = JobPostModel.objects.all()
+        data = JobPostModel.objects.select_related('posted_by')
 
-        if request.method == 'GET':
-            cat = request.GET.get('cate_id')
-            if cat:
-                data = JobPostModel.objects.filter(category = cat)
+    cat = request.GET.get('cate_id')
+    if cat:
+        data = JobPostModel.objects.filter(category = cat)
+
+    keyword = request.GET.get('q', '').strip()
+    if keyword:
+        data = data.filter(
+            Q(jb_title__icontains = keyword) |
+            Q(jb_description__icontains = keyword)
+        )
 
     con = {
-        'data' : data
+        'data' : data,
+        'keyword' : keyword
     }
 
     return render(request, 'jobs/jb-list.html', con)
