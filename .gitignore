@@ -45,5 +45,5 @@ config/__pycache__
 re_resume
 seekerImage
 company_logo
-
+db.sqlite3
 Riyad_NSDA_0001_portal/__pycache__

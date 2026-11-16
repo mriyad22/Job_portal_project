@@ -83,13 +83,11 @@ def profile(request):
 @login_required
 def profile_update(request):
     if request.user.user_type == 'Recruiter':
-        try:
-            user = request.user.recruiter_profile
-        except RecruiterProfileModel.DoesNotExist:
-            user = None
+        user = request.user
+        profile = getattr(user, 'recruiter_profile', None)
 
         if request.method == 'POST':
-            form_data = RecProUpdateForm(request.POST, request.FILES, instance = user)
+            form_data = RecProUpdateForm(request.POST, request.FILES, instance = profile)
             if form_data.is_valid():
                 data = form_data.save(commit=False)
                 data.recruiter = request.user
@@ -97,7 +95,7 @@ def profile_update(request):
                 messages.success(request, 'User Data Updated')
                 return redirect('profile')
             
-        form_data = RecProUpdateForm(instance = user)
+        form_data = RecProUpdateForm(instance = profile)
 
     else:
         try:
@@ -127,6 +125,10 @@ def profile_update(request):
 
 @login_required
 def jb_post(request):
+    user = request.user
+    if user.user_type == "Recruiter" and not user.recruiter_profile:
+        return redirect('profile')
+    
     if request.method == 'POST':
         form_data = JobPostForm(request.POST)
         if form_data.is_valid():
